@@ -395,7 +395,6 @@ class Plant3DAdvanced:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>污水处理厂 3D 数字孪生系统</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{ 
@@ -1646,7 +1645,6 @@ def render_advanced_3d_tab(unit_data: Dict):
     st.markdown("""
     <div class="advanced-3d-header">
         <h2>🏭 污水处理厂 3D 数字孪生系统</h2>
-        <p>基于 Three.js 的物理级真实感渲染 | 实时光影 | 动态水面 | 点击编辑</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1670,10 +1668,10 @@ def render_advanced_3d_tab(unit_data: Dict):
             <div class="feature-card">
                 <h4>✨ 视觉效果</h4>
                 <ul>
-                    <li>物理级材质渲染</li>
-                    <li>实时光影与阴影</li>
-                    <li>动态水面波动</li>
-                    <li>粒子系统特效</li>
+                    <li>真实渲染</li>
+                    <li>实时光影</li>
+                    <li>动态水面</li>
+                    <li>粒子特效</li>
                 </ul>
             </div>
             """, unsafe_allow_html=True)
