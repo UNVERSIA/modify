@@ -52,8 +52,8 @@ except ImportError as e:
             return pd.DataFrame({'日期': [], 'predicted_CO2eq': [], 'lower_bound': [], 'upper_bound': []})
 
 # 页面配置
-st.set_page_config(page_title="污水处理甲烷智能监测与调控系统", layout="wide", page_icon="🌍")
-st.header("寻清问碳：构建低碳目标下的污水处理甲烷智能监测与调控系统")
+st.set_page_config(page_title="污水处理甲烷监测调控与智慧科普系统", layout="wide", page_icon="🌍")
+st.header("寻清问碳：基于智能体与数字孪生的污水处理甲烷监测调控与智慧科普系统")
 
 
 # 初始化session_state
@@ -961,7 +961,7 @@ with st.sidebar:
 
 # 主界面使用选项卡组织内容
 tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
-    "3D水厂可视化", "工艺流程仿真", "甲烷足迹追踪", "甲烷账户管理", "优化与决策",
+    "3D水厂仿真", "2D工艺流程可视化", "甲烷足迹追踪", "甲烷账户管理", "优化与决策",
     "甲烷排放预测", "减排技术分析", "因子库管理"
 ])
 
@@ -969,14 +969,14 @@ with tab0:
     st.header("3D 水厂数字孪生虚拟仿真")
     
     # 显示模式说明
-    st.info("🚀 **数字孪生模式**：基于Three.js的物理级渲染，支持实时光影、动态水面、点击工艺区查看详情并编辑参数")
+    # st.info("🚀 **数字孪生模式**：基于Three.js的物理级渲染，支持实时光影、动态水面、点击工艺区查看详情并编辑参数")
     st.divider()
     
     # 使用Three.js数字孪生3D可视化（已删除Plotly 3D）
     render_advanced_3d_tab(st.session_state.unit_data)
 
 with tab1:
-    st.header("2D水厂工艺流程仿真")
+    st.header("2D水厂工艺流程可视化")
 
     # 创建两列布局
     col1, col2 = st.columns([3, 1])
@@ -1643,9 +1643,9 @@ with tab5:
     predict_col1, predict_col2 = st.columns([1, 3])
 
     with predict_col1:
-        # 固定预测12个月（2025年全年）
+        # 固定预测12个月（2027年全年）
         prediction_months = 12
-        st.info(f"预测范围: 2025年全年（12个月）")
+        st.info(f"预测范围: 2027年全年（12个月）")
 
         # 定义预测天数 - 固定为365天（一年）
         prediction_days = 365
@@ -1697,7 +1697,7 @@ with tab5:
                 st.error(f"模型加载失败: {str(e)}")
                 st.info("将使用简单预测方法")
 
-        with st.spinner(f"正在进行2025年全年预测..."):
+        with st.spinner(f"正在进行2027年全年预测..."):
             try:
                 if st.session_state.df is not None:
                     # 确保数据已计算碳排放
@@ -1751,10 +1751,10 @@ with tab5:
 
                     # 确保有日期列
                     if '日期' not in prediction_df.columns:
-                        # 生成2025年月度日期序列
+                        # 生成2027年月度日期序列
                         prediction_dates = pd.date_range(
-                            start='2025-01-31',
-                            end='2025-12-31',
+                            start='2027-01-31',
+                            end='2027-12-31',
                             freq='M'
                         )
                         prediction_df['日期'] = prediction_dates[:len(prediction_df)]
@@ -1762,8 +1762,8 @@ with tab5:
                     # 添加年月列用于显示
                     prediction_df['年月'] = prediction_df['日期'].dt.strftime('%Y年%m月')
 
-                    # 只保留2025年的数据
-                    prediction_df = prediction_df[prediction_df['日期'].dt.year == 2025]
+                    # 只保留2027年的数据
+                    prediction_df = prediction_df[prediction_df['日期'].dt.year == 2027]
 
                     # 验证预测结果并进行数据质量检查
                     if prediction_df.empty:
@@ -1805,7 +1805,7 @@ with tab5:
 
                     # 基于历史数据生成简单预测
                     historical_avg = df_calc['total_CO2eq'].mean()
-                    prediction_dates = pd.date_range(start='2025-01-31', end='2025-12-31', freq='M')
+                    prediction_dates = pd.date_range(start='2025-01-31', end='2027-12-31', freq='M')
 
                     fallback_prediction = pd.DataFrame({
                         '日期': prediction_dates,
@@ -1825,7 +1825,7 @@ with tab5:
                     st.session_state.prediction_made = False
 
     with predict_col2:
-        st.info("预测2025年全年每月甲烷排放数据。使用LSTM模型基于2018-2024年历史数据进行预测。")
+        st.info("预测2027年全年每月甲烷排放数据。使用LSTM模型基于2020-2026年历史数据进行预测。")
 
     # 第四部分：预测结果显示
     if st.session_state.get('prediction_made', False):
@@ -1894,7 +1894,7 @@ with tab5:
                         if '日期' in historical_data.columns:
                             historical_data['日期'] = pd.to_datetime(historical_data['日期'])
 
-                        # 科学的趋势计算：基于2018-2024年历史数据预测2025年变化
+                        # 科学的趋势计算：基于2020-2026年历史数据预测2027年变化
                         # 统一数据处理逻辑：都按日均值×30标准化处理
                         historical_data['年月'] = historical_data['日期'].dt.to_period('M')
 
@@ -1903,11 +1903,11 @@ with tab5:
                         # 标准化为月度表示（日均值×30）
                         historical_monthly = historical_monthly_raw * 30
 
-                        # 计算2018-2024年历史基准（最近24个月作为基准更科学）
+                        # 计算2020-2026年历史基准（最近24个月作为基准更科学）
                         if len(historical_monthly) >= 24:
-                            # 使用最近24个月（2023-2024年）作为基准
+                            # 使用最近24个月（2024-2025年）作为基准
                             recent_historical_avg = historical_monthly.tail(24).mean()
-                            calculation_base = "最近24个月历史数据（2023-2024年）"
+                            calculation_base = "最近24个月历史数据（2024-2025年）"
                         elif len(historical_monthly) >= 12:
                             # 至少使用最近12个月作为基准
                             recent_historical_avg = historical_monthly.tail(12).mean()
@@ -1935,15 +1935,15 @@ with tab5:
                                 # 科学解释变化趋势
                                 trend_explanation = ""
                                 if change > 10:
-                                    trend_explanation = "预测2025年甲烷排放将显著上升，建议加强节能减排措施"
+                                    trend_explanation = "预测2027年甲烷排放将显著上升，建议加强节能减排措施"
                                 elif change > 5:
-                                    trend_explanation = "预测2025年甲烷排放将适度上升"
+                                    trend_explanation = "预测2027年甲烷排放将适度上升"
                                 elif change > -5:
-                                    trend_explanation = "预测2025年甲烷排放将保持相对稳定"
+                                    trend_explanation = "预测2027年甲烷排放将保持相对稳定"
                                 elif change > -10:
-                                    trend_explanation = "预测2025年甲烷排放将适度下降"
+                                    trend_explanation = "预测2027年甲烷排放将适度下降"
                                 else:
-                                    trend_explanation = "预测2025年甲烷排放将显著下降，减排效果良好"
+                                    trend_explanation = "预测2027年甲烷排放将显著下降，减排效果良好"
 
                                 # 记录详细计算信息
                                 calculation_details = {
@@ -1964,7 +1964,7 @@ with tab5:
                                     st.markdown(f"""
                                     **趋势计算说明**：
                                     - **历史基准期**: {calculation_details['data_range']}
-                                    - **预测目标期**: 2025年全年
+                                    - **预测目标期**: 2027年全年
                                     - **历史月均值**: {recent_historical_avg:.1f} kgCO2eq/月
                                     - **预测月均值**: {predicted_monthly_avg:.1f} kgCO2eq/月
                                     - **变化趋势**: {change:+.1f}% ({trend_explanation})
